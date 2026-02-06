@@ -4118,62 +4118,79 @@
         };
 
 // ==========================================
-// ⚡ FINAL FIXED CODE
+// ⚡ MASTER CODE (IMAGES + SCRATCH LOGIC)
 // ==========================================
 
-// 1. DATA (Apni Photo ka naam yahan likh)
-const scratchData = [
-    { 
-        title: "Hidden Desire", 
-        desc: "Revealed specially for you.",
-        // Yahan wahi naam daal jo Red Box mein chala tha
-        image: "test1.jpg"  
-    }
+// 1. SAARI IMAGES KE NAAM (Folder wala jhanjhat hataya hua hai)
+const imageFilenames = [
+    "Satyr", "Niagara falls", "Rocket", "Tight pussy", "Relaxation",
+    "Gimlet", "Pinwheel", "Loop", "Slope", "Funny joke",
+    "Harp", "Tea bag", "Exciting game", "Ladies' man", "Juicy ass",
+    "New 69 on the chair", "Stickman", "Catapult", "Licking master", "Descent",
+    "Bounce", "Apex", "Chill", "Hot carl", "Snake charmer",
+    "Twerk on dick", "Ghetto", "Doggy on the edge - 2", "Tantra chair", "Crazy doggy",
+    "Pearl", "Aura", "Curiosity", "Khaleesi", "Insatiable clitoris",
+    "Breeze", "Weird fantasy", "Crazy monkey", "Buffet", "Houdini",
+    "Tea bag - 2", "Dream", "Donkey punch", "Venus flytrap", "Wheelbarrow - 3", 
+    "Special fallatio", "Crazy train", "Pussy licking", "Woven root", "Fireman"
 ];
 
-// 2. LOGIC
+// 2. MAIN LOGIC
 window.initScratch = () => {
-    // Canvas dhoondho
+    // --- STEP A: RANDOM IMAGE SELECT KARO ---
+    const randomName = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
+    
+    const currentCard = {
+        title: randomName,
+        desc: "Scratch to reveal...",
+        image: `${randomName}.jpg` // Direct file uthayega (Github ke liye best)
+    };
+
+    console.log("Selected Card:", currentCard); // Debugging ke liye
+
+    // --- STEP B: HTML ELEMENTS DHOONDHO ---
     const canvas = document.getElementById('scratch-canvas');
     const hiddenLayer = document.getElementById('scratch-hidden-layer');
+    const titleEl = document.getElementById('scratch-title');
+    const descEl = document.getElementById('scratch-desc');
+
+    // Agar text elements bahar hain toh unhe update kar do
+    if(titleEl) titleEl.textContent = currentCard.title;
+    if(descEl) descEl.textContent = currentCard.desc;
 
     if (!canvas || !hiddenLayer) {
-        console.error("HTML elements nahi mile! Step 1 wapas check kar.");
+        console.error("Canvas ya Hidden Layer nahi mila!");
         return;
     }
 
     const ctx = canvas.getContext('2d');
-    
-    // Canvas ka size container ke barabar set karo
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
 
-    // --- A. SILVER LAYER PAINT KARO ---
-    ctx.fillStyle = '#C0C0C0'; // Silver Color
+    // --- STEP C: SILVER LAYER PAINT KARO ---
+    ctx.fillStyle = '#C0C0C0'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Text likho silver ke upar
     ctx.fillStyle = '#333';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText("Scratch Me!", canvas.width/2, canvas.height/2);
 
-    // --- B. PHOTO SET KARO (Neeche wali layer mein) ---
-    const pos = scratchData[0]; // Pehla item uthao
-    
+    // --- STEP D: PHOTO SET KARO (Hidden Layer Mein) ---
+    // Yahan humne tera wala HTML structure use kiya hai
     hiddenLayer.innerHTML = `
         <div class="flex flex-col items-center justify-center w-full h-full p-2 text-center">
             <div class="w-48 h-48 mb-2 rounded-lg overflow-hidden border-2 border-pink-500 shadow-md">
-                <img src="${pos.image}" class="w-full h-full object-cover">
+                <img src="${currentCard.image}" class="w-full h-full object-cover" onerror="this.src=''; alert('Image nahi mili: ${currentCard.image}');">
             </div>
-            <h3 class="text-xl font-bold text-pink-600">${pos.title}</h3>
-            <p class="text-xs text-gray-800">${pos.desc}</p>
+            <h3 class="text-xl font-bold text-pink-600">${currentCard.title}</h3>
+            <p class="text-xs text-gray-800">${currentCard.desc}</p>
         </div>
     `;
 
-    // --- C. SCRATCH KARNE KA JADU ---
+    // --- STEP E: SCRATCH KARNE KA JADU (Tera wala logic) ---
     let isDrawing = false;
 
     const getPos = (e) => {
@@ -4184,13 +4201,12 @@ window.initScratch = () => {
     };
 
     const scratch = (x, y) => {
-        ctx.globalCompositeOperation = 'destination-out'; // Ye paint ko mitata hai
+        ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
-        ctx.arc(x, y, 25, 0, Math.PI * 2); // Brush ka size
+        ctx.arc(x, y, 25, 0, Math.PI * 2);
         ctx.fill();
     };
 
-    // Mouse aur Touch Events
     const start = (e) => { isDrawing = true; scratch(getPos(e).x, getPos(e).y); };
     const move = (e) => { 
         if (isDrawing) { 
@@ -4203,7 +4219,6 @@ window.initScratch = () => {
     canvas.onmousedown = start; canvas.onmousemove = move; canvas.onmouseup = end;
     canvas.ontouchstart = start; canvas.ontouchmove = move; canvas.ontouchend = end;
 };
-
         // --- NEVER HAVE I EVER (NHIE) LOGIC (MERGED) ---
         window.initNHIE = () => {
              if (!window.checkLicensingStatus()) return;
@@ -7129,4 +7144,5 @@ function appendMessage(text, sender) {
 </style>
 
 </body>
+
 </html>
