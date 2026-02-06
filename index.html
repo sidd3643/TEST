@@ -7025,8 +7025,7 @@ function setupCanvas(canvas) {
     canvas.ontouchstart = (e) => { isDrawing = true; scratch(e); };
     canvas.ontouchmove = scratch;
     canvas.ontouchend = () => { isDrawing = false; };
-}
-    </script>
+}    </script>
 <div id="partner-status" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 border border-pink-500/50 text-white px-4 py-2 rounded-full text-xs font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)] hidden z-50 flex items-center gap-2">
     <span class="relative flex h-2 w-2">
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -7069,6 +7068,7 @@ function setupCanvas(canvas) {
 </body>
 
 </html>
+
 
 
 
