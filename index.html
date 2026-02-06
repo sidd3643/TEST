@@ -6896,10 +6896,9 @@ function appendMessage(text, sender) {
 }
 
 // ==========================================
-// 🛠️ FINAL WORKING CODE (Paste at Bottom)
+// 🚀 SMOOTH TRANSITION FIX
 // ==========================================
 
-// 1. TERI IMAGES KI LIST
 const imageFilenames = [
     "Satyr", "Niagara falls", "Rocket", "Tight pussy", "Relaxation",
     "Gimlet", "Pinwheel", "Loop", "Slope", "Funny joke",
@@ -6913,41 +6912,55 @@ const imageFilenames = [
     "Special fallatio", "Crazy train", "Pussy licking", "Woven root", "Fireman"
 ];
 
-// 2. MAIN FUNCTION (Working)
 window.initScratch = () => {
-    // Error Proofing
     try {
         if (window.checkLicensingStatus && !window.checkLicensingStatus()) return;
 
-        // Image select karo
-        const randomName = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
-        
-        // Simple file path banana (No confusion)
-        const imagePath = randomName + ".jpg"; 
-
-        console.log("Loading Image:", imagePath);
-
-        // HTML Elements dhoondho
-        const resultLayer = document.getElementById('scratch-result-layer');
+        // 1. SABSE PEHLE: Old Card ko Silver Layer se dhak do (Instant Reset)
+        const canvas = document.getElementById('scratch-canvas');
         const titleEl = document.getElementById('scratch-title');
         const descEl = document.getElementById('scratch-desc');
-        const canvas = document.getElementById('scratch-canvas');
+        
+        // Agar canvas hai, toh turant paint kar do taaki purana card na dikhe
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            // Canvas clear karo
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            // Wapis Silver Paint karo
+            ctx.fillStyle = '#C0C0C0'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // "Loading..." text likh do canvas pe
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText("Loading...", canvas.width/2, canvas.height/2);
+        }
 
-        // Loading text dikhao taaki pata chale process chal raha hai
-        if(titleEl) titleEl.textContent = "Loading: " + randomName + "...";
+        // Text ko temporarily "..." kar do taaki purana naam na dikhe
+        if(titleEl) titleEl.textContent = "...";
+        if(descEl) descEl.textContent = "Getting ready...";
 
-        // Image Load karo
+        // 2. AB NAYA DATA SELECT KARO
+        const randomName = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
+        const imagePath = randomName + ".jpg"; 
+
+        console.log("Loading:", imagePath);
+
+        const resultLayer = document.getElementById('scratch-result-layer');
+
+        // 3. IMAGE LOAD KARO (Background mein)
         const imgLoader = new Image();
         imgLoader.src = imagePath;
 
         imgLoader.onload = () => {
-            window.showScreen('scratch'); // Screen dikhao
-            
-            // Text Set karo
+            window.showScreen('scratch');
+
+            // Ab Image ready hai, toh Text aur Background update karo
             if(titleEl) titleEl.textContent = randomName;
             if(descEl) descEl.textContent = "Scratch to reveal the position...";
 
-            // Background Image Set karo
             if(resultLayer) {
                 resultLayer.style.backgroundImage = "url('" + imagePath + "')";
                 resultLayer.style.backgroundSize = "contain";
@@ -6955,24 +6968,24 @@ window.initScratch = () => {
                 resultLayer.style.backgroundPosition = "center";
             }
 
-            // Canvas (Silver Layer) wapis banao
+            // Final Canvas Setup (Scratch functionality enable karne ke liye)
             if(typeof setupCanvas === 'function') {
                 setupCanvas(canvas);
             }
         };
 
         imgLoader.onerror = () => {
-            console.error("Image Fail:", imagePath);
-            alert("❌ ERROR: Photo nahi mili!\n\nCode dhoondh raha hai: " + imagePath + "\n\n1. Check kar GitHub pe photo ka naam same hai?\n2. Kya extension .jpg hi hai? (.png toh nahi?)");
-            window.showScreen('scratch');
+            // Agar error aaye toh alert do
+            alert("❌ Image nahi mili: " + imagePath);
+            setupCanvas(canvas); // Canvas wapis reset kar do taaki game atke na
         };
 
     } catch(e) {
-        alert("Code mein error aa gaya: " + e.message);
+        console.error(e);
     }
 };
 
-// Canvas Setup (Zaroori hai)
+// Canvas Logic (Ye same rahega, bas copy-paste kar dena safety ke liye)
 function setupCanvas(canvas) {
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -6980,18 +6993,15 @@ function setupCanvas(canvas) {
     canvas.width = rect.width;
     canvas.height = rect.height;
 
-    // Silver Paint
     ctx.fillStyle = '#C0C0C0'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Text
     ctx.fillStyle = '#333';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText("Scratch Me!", canvas.width/2, canvas.height/2);
 
-    // Scratch Logic
     let isDrawing = false;
     const getPos = (e) => {
         const r = canvas.getBoundingClientRect();
@@ -7009,7 +7019,6 @@ function setupCanvas(canvas) {
         ctx.fill();
     };
     
-    // Touch & Mouse Events
     canvas.onmousedown = (e) => { isDrawing = true; scratch(e); };
     canvas.onmousemove = scratch;
     canvas.onmouseup = () => { isDrawing = false; };
@@ -7017,7 +7026,6 @@ function setupCanvas(canvas) {
     canvas.ontouchmove = scratch;
     canvas.ontouchend = () => { isDrawing = false; };
 }
-
     </script>
 <div id="partner-status" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 border border-pink-500/50 text-white px-4 py-2 rounded-full text-xs font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)] hidden z-50 flex items-center gap-2">
     <span class="relative flex h-2 w-2">
@@ -7061,5 +7069,6 @@ function setupCanvas(canvas) {
 </body>
 
 </html>
+
 
 
