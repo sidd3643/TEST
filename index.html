@@ -4117,130 +4117,7 @@
             const card = document.getElementById('active-card'); card.classList.add('visible'); setTimeout(() => card.classList.add('flipped'), 300);
         };
 
-// ==========================================
-// 🛠️ ULTIMATE FIX (LOADING SCREEN PROBLEM SOLVED)
-// ==========================================
-
-// 1. IMAGES LIST
-const imageFilenames = [
-    "Satyr", "Niagara falls", "Rocket", "Tight pussy", "Relaxation",
-    "Gimlet", "Pinwheel", "Loop", "Slope", "Funny joke",
-    "Harp", "Tea bag", "Exciting game", "Ladies' man", "Juicy ass",
-    "New 69 on the chair", "Stickman", "Catapult", "Licking master", "Descent",
-    "Bounce", "Apex", "Chill", "Hot carl", "Snake charmer",
-    "Twerk on dick", "Ghetto", "Doggy on the edge - 2", "Tantra chair", "Crazy doggy",
-    "Pearl", "Aura", "Curiosity", "Khaleesi", "Insatiable clitoris",
-    "Breeze", "Weird fantasy", "Crazy monkey", "Buffet", "Houdini",
-    "Tea bag - 2", "Dream", "Donkey punch", "Venus flytrap", "Wheelbarrow - 3", 
-    "Special fallatio", "Crazy train", "Pussy licking", "Woven root", "Fireman"
-];
-
-// 2. MAIN LOGIC
-window.initScratch = () => {
-    // License check (Standard)
-    if (window.checkLicensingStatus && !window.checkLicensingStatus()) return;
-
-    // --- STEP A: RANDOM IMAGE UTHAO ---
-    const randomName = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
-    // DHYAN DE: Yahan maine 'images/' hata diya hai kyunki teri images bahar hain
-    const imagePath = `${randomName}.jpg`; 
-
-    console.log("Trying to load:", imagePath);
-
-    // --- STEP B: ELEMENT CHECK ---
-    // Yahan maine wapis 'scratch-result-layer' kar diya hai jo tere HTML mein asli mein hai
-    const resultLayer = document.getElementById('scratch-result-layer'); 
-    const canvas = document.getElementById('scratch-canvas');
-    const titleEl = document.getElementById('scratch-title');
-    const descEl = document.getElementById('scratch-desc');
-
-    if (!resultLayer || !canvas) {
-        alert("Error: Code ko 'scratch-result-layer' ya Canvas nahi mila. HTML check karo.");
-        return;
-    }
-
-    // --- STEP C: IMAGE PRE-LOADER ---
-    const imgLoader = new Image();
-    imgLoader.src = imagePath;
-
-    // Jaise hi image load hogi, game start hoga
-    imgLoader.onload = () => {
-        // 1. Loading screen hatao
-        window.showScreen('scratch');
-
-        // 2. Text update karo
-        if(titleEl) titleEl.textContent = randomName;
-        if(descEl) descEl.textContent = "Scratch to reveal the position...";
-
-        // 3. Background Image Set karo (Ye tarika 100% kaam karta hai)
-        resultLayer.style.backgroundImage = `url('${imagePath}')`;
-        resultLayer.style.backgroundSize = "contain"; // Ya 'cover' agar full screen chahiye
-        resultLayer.style.backgroundRepeat = "no-repeat";
-        resultLayer.style.backgroundPosition = "center";
-
-        // 4. Canvas (Silver Layer) ko reset aur paint karo
-        setupCanvas(canvas);
-    };
-
-    // Agar Image nahi mili
-    imgLoader.onerror = () => {
-        console.error("Image Fail:", imagePath);
-        alert(`❌ Photo load nahi hui!\nCode dhoondh raha hai: "${imagePath}"\n\nCheck kar ki GitHub pe photo ka naam small/capital letters mein same hai kya.`);
-        // Error ke bawajood screen dikha do taaki user atka na rahe
-        window.showScreen('scratch'); 
-    };
-};
-
-// --- STEP D: CANVAS SETUP FUNCTION ---
-function setupCanvas(canvas) {
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.parentElement.getBoundingClientRect();
-    
-    // Canvas size fix
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-
-    // Silver Paint
-    ctx.fillStyle = '#C0C0C0'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // "Scratch Me" Text
-    ctx.fillStyle = '#333';
-    ctx.font = 'bold 20px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText("Scratch Me!", canvas.width/2, canvas.height/2);
-
-    // Scratch Logic
-    let isDrawing = false;
-
-    const getPos = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return { x: clientX - rect.left, y: clientY - rect.top };
-    };
-
-    const scratch = (x, y) => {
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(x, y, 25, 0, Math.PI * 2);
-        ctx.fill();
-    };
-
-    const start = (e) => { isDrawing = true; scratch(getPos(e).x, getPos(e).y); };
-    const move = (e) => { 
-        if (isDrawing) { 
-            e.preventDefault(); 
-            scratch(getPos(e).x, getPos(e).y); 
-        } 
-    };
-    const end = () => { isDrawing = false; };
-
-    // Events Attach karo (Purane events hatane ke liye naya clone banate hain usually, par ye simple chalega)
-    canvas.onmousedown = start; canvas.onmousemove = move; canvas.onmouseup = end;
-    canvas.ontouchstart = start; canvas.ontouchmove = move; canvas.ontouchend = end;
-}        // --- NEVER HAVE I EVER (NHIE) LOGIC (MERGED) ---
+       // --- NEVER HAVE I EVER (NHIE) LOGIC (MERGED) ---
         window.initNHIE = () => {
              if (!window.checkLicensingStatus()) return;
             document.getElementById('nhie-game-area').classList.remove('hidden');
@@ -4696,111 +4573,7 @@ function setupCanvas(canvas) {
              if(window.lucide) lucide.createIcons();
         });
 
-        window.initScratch = () => {
-            if (!window.checkLicensingStatus()) return;
-
-            // 1. Pick Random Data
-            const data = scratchData[Math.floor(Math.random() * scratchData.length)];
-            
-            // 2. Pre-load Image
-            const imgLoader = new Image();
-            imgLoader.src = data.img;
-
-            imgLoader.onload = () => {
-                 window.showScreen('scratch');
-                 document.getElementById('scratch-title').textContent = data.title;
-                 document.getElementById('scratch-desc').textContent = data.desc;
-                 
-                 const resultLayer = document.getElementById('scratch-result-layer');
-                 // Gradient overlay taaki text saaf dikhe
-                 resultLayer.style.backgroundImage = `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0)), url('${data.img}')`;
-
-                 setupScratchCanvas(); 
-            };
-            
-            imgLoader.onerror = () => {
-                 console.error("Image failed: " + data.img);
-                 // Fallback
-                 alert("Image not found: " + data.img + "\nCheck filename!");
-                 window.showScreen('scratch');
-                 document.getElementById('scratch-title').textContent = data.title;
-                 setupScratchCanvas();
-            }
-        };
-
-        // --- CANVAS SETUP (Standard Logic) ---
-        function setupScratchCanvas() {
-            const canvas = document.getElementById('scratch-canvas');
-            const ctx = canvas.getContext('2d');
-            const parent = canvas.parentElement;
-            const hint = document.getElementById('scratch-hint');
-
-            canvas.width = parent.offsetWidth;
-            canvas.height = parent.offsetHeight;
-
-            canvas.style.opacity = '1';
-            canvas.style.display = 'block';
-            canvas.style.transition = 'none';
-
-            // Silver Layer
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = '#9ca3af'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Text
-            ctx.fillStyle = '#374151';
-            ctx.font = 'bold 24px "Playfair Display", serif';
-            ctx.textAlign = "center";
-            ctx.fillText("RUB TO REVEAL", canvas.width/2, canvas.height/2);
-
-            hint.style.display = 'block';
-           
-            let isDrawing = false;
-
-            const getPos = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                return { x: clientX - rect.left, y: clientY - rect.top };
-            };
-
-            const scratch = (e) => {
-                if (!isDrawing) return;
-                if(e.type === 'touchmove') e.preventDefault(); 
-                hint.style.display = 'none';
-                const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out'; 
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); 
-                ctx.fill();
-            };
-
-            canvas.onmousedown = (e) => { isDrawing = true; scratch(e); };
-            canvas.onmousemove = scratch;
-            canvas.onmouseup = () => { isDrawing = false; checkWin(); };
-            canvas.ontouchstart = (e) => { isDrawing = true; scratch(e); };
-            canvas.ontouchmove = scratch;
-            canvas.ontouchend = () => { isDrawing = false; checkWin(); };
-
-            const checkWin = () => {
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                let pixels = imageData.data;
-                let transparent = 0;
-                for (let i = 3; i < pixels.length; i += 64) { 
-                    if (pixels[i] === 0) transparent++;
-                }
-                const totalPixels = pixels.length / 64;
-                const percent = (transparent / totalPixels) * 100;
-                if (percent > 35) { 
-                    canvas.style.transition = 'opacity 0.8s ease';
-                    canvas.style.opacity = '0';
-                    setTimeout(() => {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                        canvas.style.display = 'none'; 
-                    }, 800);
-                }
-            };
-        };
+       
 // --- SPICE & DICE LOGIC ---
 
         const diceActions = [
@@ -7122,7 +6895,128 @@ function appendMessage(text, sender) {
     container.scrollTop = container.scrollHeight;
 }
 
+// ==========================================
+// 🛠️ FINAL WORKING CODE (Paste at Bottom)
+// ==========================================
 
+// 1. TERI IMAGES KI LIST
+const imageFilenames = [
+    "Satyr", "Niagara falls", "Rocket", "Tight pussy", "Relaxation",
+    "Gimlet", "Pinwheel", "Loop", "Slope", "Funny joke",
+    "Harp", "Tea bag", "Exciting game", "Ladies' man", "Juicy ass",
+    "New 69 on the chair", "Stickman", "Catapult", "Licking master", "Descent",
+    "Bounce", "Apex", "Chill", "Hot carl", "Snake charmer",
+    "Twerk on dick", "Ghetto", "Doggy on the edge - 2", "Tantra chair", "Crazy doggy",
+    "Pearl", "Aura", "Curiosity", "Khaleesi", "Insatiable clitoris",
+    "Breeze", "Weird fantasy", "Crazy monkey", "Buffet", "Houdini",
+    "Tea bag - 2", "Dream", "Donkey punch", "Venus flytrap", "Wheelbarrow - 3", 
+    "Special fallatio", "Crazy train", "Pussy licking", "Woven root", "Fireman"
+];
+
+// 2. MAIN FUNCTION (Working)
+window.initScratch = () => {
+    // Error Proofing
+    try {
+        if (window.checkLicensingStatus && !window.checkLicensingStatus()) return;
+
+        // Image select karo
+        const randomName = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
+        
+        // Simple file path banana (No confusion)
+        const imagePath = randomName + ".jpg"; 
+
+        console.log("Loading Image:", imagePath);
+
+        // HTML Elements dhoondho
+        const resultLayer = document.getElementById('scratch-result-layer');
+        const titleEl = document.getElementById('scratch-title');
+        const descEl = document.getElementById('scratch-desc');
+        const canvas = document.getElementById('scratch-canvas');
+
+        // Loading text dikhao taaki pata chale process chal raha hai
+        if(titleEl) titleEl.textContent = "Loading: " + randomName + "...";
+
+        // Image Load karo
+        const imgLoader = new Image();
+        imgLoader.src = imagePath;
+
+        imgLoader.onload = () => {
+            window.showScreen('scratch'); // Screen dikhao
+            
+            // Text Set karo
+            if(titleEl) titleEl.textContent = randomName;
+            if(descEl) descEl.textContent = "Scratch to reveal the position...";
+
+            // Background Image Set karo
+            if(resultLayer) {
+                resultLayer.style.backgroundImage = "url('" + imagePath + "')";
+                resultLayer.style.backgroundSize = "contain";
+                resultLayer.style.backgroundRepeat = "no-repeat";
+                resultLayer.style.backgroundPosition = "center";
+            }
+
+            // Canvas (Silver Layer) wapis banao
+            if(typeof setupCanvas === 'function') {
+                setupCanvas(canvas);
+            }
+        };
+
+        imgLoader.onerror = () => {
+            console.error("Image Fail:", imagePath);
+            alert("❌ ERROR: Photo nahi mili!\n\nCode dhoondh raha hai: " + imagePath + "\n\n1. Check kar GitHub pe photo ka naam same hai?\n2. Kya extension .jpg hi hai? (.png toh nahi?)");
+            window.showScreen('scratch');
+        };
+
+    } catch(e) {
+        alert("Code mein error aa gaya: " + e.message);
+    }
+};
+
+// Canvas Setup (Zaroori hai)
+function setupCanvas(canvas) {
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    // Silver Paint
+    ctx.fillStyle = '#C0C0C0'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Text
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText("Scratch Me!", canvas.width/2, canvas.height/2);
+
+    // Scratch Logic
+    let isDrawing = false;
+    const getPos = (e) => {
+        const r = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - r.left, y: clientY - r.top };
+    };
+    const scratch = (e) => {
+        if (!isDrawing) return;
+        if(e.type === 'touchmove') e.preventDefault();
+        const pos = getPos(e);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
+        ctx.fill();
+    };
+    
+    // Touch & Mouse Events
+    canvas.onmousedown = (e) => { isDrawing = true; scratch(e); };
+    canvas.onmousemove = scratch;
+    canvas.onmouseup = () => { isDrawing = false; };
+    canvas.ontouchstart = (e) => { isDrawing = true; scratch(e); };
+    canvas.ontouchmove = scratch;
+    canvas.ontouchend = () => { isDrawing = false; };
+}
 
     </script>
 <div id="partner-status" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 border border-pink-500/50 text-white px-4 py-2 rounded-full text-xs font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)] hidden z-50 flex items-center gap-2">
@@ -7167,4 +7061,5 @@ function appendMessage(text, sender) {
 </body>
 
 </html>
+
 
